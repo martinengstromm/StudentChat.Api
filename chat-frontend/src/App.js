@@ -1,23 +1,39 @@
-import logo from './logo.svg';
+import { useEffect, useState } from "react";
+import * as signalR from "@microsoft/signalr";
 import './App.css';
 
 function App() {
+  const [connection, setConnection] = useState(null);
+  const [status, setStatus] = useState("Ansluter...");
+
+  useEffect(() => {
+    // Skapar anslutningen till SignalR-hubben
+    const newConnection = new signalR.HubConnectionBuilder()
+      .withUrl("https://localhost:PORT/chatHub")
+      .withAutomaticReconnect()
+      .build();
+
+    setConnection(newConnection);
+  }, []);
+
+  useEffect(() => {
+    if (connection) {
+      // Startar anslutningen
+      connection
+        .start()
+        .then(() => {
+          setStatus("Connected");
+        })
+        .catch(() => {
+          setStatus("Could not connect");
+        });
+    }
+  }, [connection]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Student Chat</h1>
+      <p>Status: {status}</p>
     </div>
   );
 }
