@@ -7,8 +7,13 @@ function App() {
   const [status, setStatus] = useState("Connecting...");
 
   const [user, setUser] = useState("");
+  const [role, setRole] = useState("Student");
+
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+
+  const [announcement, setAnnouncement] = useState("");
+  const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
     // Skapar anslutningen till SignalR-hubben
@@ -23,11 +28,19 @@ function App() {
   useEffect(() => {
     if (connection) {
       // Tar emott meddelande från backend
-      connection.on("ReceiveMessage", (user, message) => {
+      connection.on("ReceiveMessage", (user, role, message) => {
         setMessages((oldMessages) => [
           ...oldMessages,
-          {user, message}
+          {user, role, message}
         ]);
+    });
+
+    // Tar emot announcements
+    connection.on("ReceiveAnnouncement", (user, message) => {
+      setAnnouncements((oldAnnouncements) => [
+        ...oldAnnouncements,
+        { user, message }
+      ]);
     });
     
     // Startar anslutningen
@@ -48,9 +61,25 @@ function App() {
       return;
     }
 
-    await connection.invoke("SendMessage", user, message);
+    await connection.invoke("SendMessage", user, role, message);
 
     setMessage("");
+  };
+
+  //Skickar announcement
+  const sendAnnouncement = async () => {
+    if (!user.trim() || !announcement.trim()){
+      return;
+    }
+
+    await connection.invoke(
+      "SendAnnouncement",
+      user,
+      role,
+      announcement
+    );
+
+    setAnnouncement("");
   };
 
   return (
@@ -65,10 +94,21 @@ function App() {
         onChange={(e) => setUser(e.target.value)}
       />
 
+      <select
+        value={role}
+        onChange={(e) => setRole(e.target.value)}
+      >
+        <option value="Student">Student</option>
+        <option value="Teacher">teacher</option>
+      </select>
+
+      <hr />
+
+      <h2>General Chat</h2>
 
       <div>
         {messages.map((msg, index) => (
-          <p key={index}> <strong>{msg.user}:</strong> {msg.message}
+          <p key={index}> <strong>{msg.user}:</strong> ({msg.role}): {msg.message}
           </p>
         ))}
       </div>
@@ -83,6 +123,37 @@ function App() {
       <button onClick={sendMessage}>
         Send
       </button>
+
+      <hr />
+
+      <h2>Announcements</h2>
+
+      <div>
+        {announcements.map((item, index) => (
+          <p key={index}>
+            <strong>{item.user}:</strong> {item.message}
+          </p>
+        ))}
+      </div>    
+
+      {role === "Teacher" && (
+        <div>
+          <input
+            type="text"
+            placeholder="Write an announcement"
+            value={announcement}
+            onChange={(e) => setAnnouncement(e.target.value)}
+          />
+          ¨
+          <button onClick={sendAnnouncement}>
+            Publish
+          </button>
+        </div>
+      )}
+
+      {role === "Student" && (
+        <p>Only teachers can publish announcements</p>
+      )}
     </div>
   );
 }
