@@ -12,6 +12,18 @@ builder.Services.AddOpenApi();
 // Ativera SignalR
 builder.Services.AddSignalR();
 
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("ReactApp", policy =>
+	{
+		policy
+			.WithOrigins("http://localhost:3000")
+			.AllowAnyHeader()
+			.AllowAnyMethod()
+			.AllowCredentials();
+	});
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,6 +33,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Cors regler för react
+app.UseCors("ReactApp");
 
 app.UseAuthorization();
 
