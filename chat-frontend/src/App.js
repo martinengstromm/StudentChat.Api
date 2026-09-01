@@ -9,7 +9,7 @@ function App() {
   useEffect(() => {
     // Skapar anslutningen till SignalR-hubben
     const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl("https://localhost:PORT/chatHub")
+      .withUrl("https://localhost:7100/chatHub")
       .withAutomaticReconnect()
       .build();
 
