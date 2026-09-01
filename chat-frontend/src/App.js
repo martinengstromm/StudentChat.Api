@@ -84,7 +84,7 @@ function App() {
 
   return (
     <div>
-      <h1>Student Chat</h1>
+      <h1>School Chat</h1>
       <p>Status: {status}</p>
 
       <input
@@ -104,56 +104,64 @@ function App() {
 
       <hr />
 
-      <h2>General Chat</h2>
+      <div className="chat-layout">
 
-      <div>
-        {messages.map((msg, index) => (
-          <p key={index}> <strong>{msg.user}:</strong> ({msg.role}): {msg.message}
-          </p>
-        ))}
-      </div>
+        <div className="general-chat">
+          <h2>General Chat</h2>
 
-      <input
-        type="text"
-        placeholder="Write a message"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-      />
-    
-      <button onClick={sendMessage}>
-        Send
-      </button>
+          <div>
+            {messages.map((msg, index) => (
+              <p key={index}> <strong>{msg.user}:</strong> ({msg.role}): {msg.message}
+              </p>
+            ))}
+          </div>
 
-      <hr />
-
-      <h2>Announcements</h2>
-
-      <div>
-        {announcements.map((item, index) => (
-          <p key={index}>
-            <strong>{item.user}:</strong> {item.message}
-          </p>
-        ))}
-      </div>    
-
-      {role === "Teacher" && (
-        <div>
           <input
             type="text"
-            placeholder="Write an announcement"
-            value={announcement}
-            onChange={(e) => setAnnouncement(e.target.value)}
+            placeholder="Write a message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
           />
-          ¨
-          <button onClick={sendAnnouncement}>
-            Publish
+        
+          <button onClick={sendMessage}>
+            Send
           </button>
+          
         </div>
-      )}
 
-      {role === "Student" && (
-        <p>Only teachers can publish announcements</p>
-      )}
+        <hr />
+          
+        <div className="announcements">
+          <h2>Announcements</h2>
+
+          <div>
+            {announcements.map((item, index) => (
+              <p key={index}>
+                <strong>{item.user}:</strong> {item.message}
+              </p>
+            ))}
+          </div>    
+
+          {role === "Teacher" && (
+            <div>
+              <input
+                type="text"
+                placeholder="Write an announcement"
+                value={announcement}
+                onChange={(e) => setAnnouncement(e.target.value)}
+              />
+              ¨
+              <button onClick={sendAnnouncement}>
+                Publish
+              </button>
+            </div>
+          )}
+
+          {role === "Student" && (
+            <p>Only teachers can publish announcements</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
