@@ -84,50 +84,56 @@ function App() {
 
   return (
     <div>
-      <h1>School Chat</h1>
-      <p>Status: {status}</p>
+      <div className="header">
+        <div>
+          <h1>School Chat</h1>
+          <p>Status: {status}</p>
+        </div>
 
-      <input
-        type="text"
-        placeholder="Your name"
-        value={user}
-        onChange={(e) => setUser(e.target.value)}
-      />
-
-      <select
-        value={role}
-        onChange={(e) => setRole(e.target.value)}
-      >
-        <option value="Student">Student</option>
-        <option value="Teacher">teacher</option>
-      </select>
-
-      <hr />
-
-      <div className="chat-layout">
-
-        <div className="general-chat">
-          <h2>General Chat</h2>
-
-          <div>
-            {messages.map((msg, index) => (
-              <p key={index}> <strong>{msg.user}:</strong> ({msg.role}): {msg.message}
-              </p>
-            ))}
-          </div>
-
+        <div className="user-settings">
           <input
             type="text"
-            placeholder="Write a message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Your name"
+            value={user}
+            onChange={(e) => setUser(e.target.value)}
           />
-        
-          <button onClick={sendMessage}>
-            Send
-          </button>
-          
+
+          <select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+          >
+            <option value="Student">Student</option>
+            <option value="Teacher">teacher</option>
+          </select>
         </div>
+      </div>
+        
+      <hr />
+
+        <div className="chat-layout">
+
+          <div className="general-chat">
+            <h2>General Chat</h2>
+
+            <div>
+              {messages.map((msg, index) => (
+                <p key={index}> <strong>{msg.user}:</strong> ({msg.role}): {msg.message}
+                </p>
+              ))}
+            </div>
+
+            <input
+              type="text"
+              placeholder="Write a message"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+          
+            <button onClick={sendMessage}>
+              Send
+            </button>
+            
+          </div>
 
         <hr />
           
