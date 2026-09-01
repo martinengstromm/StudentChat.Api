@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import * as signalR from "@microsoft/signalr";
 import './App.css';
-import { sendMessage } from "@microsoft/signalr/dist/esm/Utils";
 
 function App() {
   const [connection, setConnection] = useState(null);
@@ -42,6 +41,17 @@ function App() {
         });
     }
   }, [connection]);
+
+  // Skickar meddelandet till backend
+  const sendMessage = async () => {
+    if (!user.trim() || !message.trim()) {
+      return;
+    }
+
+    await connection.invoke("SendMessage", user, message);
+
+    setMessage("");
+  };
 
   return (
     <div>
