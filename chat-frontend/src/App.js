@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import * as signalR from "@microsoft/signalr";
 import './App.css';
+import { sendMessage } from "@microsoft/signalr/dist/esm/Utils";
 
 function App() {
   const [connection, setConnection] = useState(null);
-  const [status, setStatus] = useState("Ansluter...");
+  const [status, setStatus] = useState("Connecting...");
+
+  const [user, setUser] = useState("");
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     // Skapar anslutningen till SignalR-hubben
@@ -18,7 +23,15 @@ function App() {
 
   useEffect(() => {
     if (connection) {
-      // Startar anslutningen
+      // Tar emott meddelande från backend
+      connection.on("ReceiveMessage", (user, message) => {
+        setMessages((oldMessages) => [
+          ...oldMessages,
+          {user, message}
+        ]);
+    });
+    
+    // Startar anslutningen
       connection
         .start()
         .then(() => {
@@ -34,6 +47,32 @@ function App() {
     <div>
       <h1>Student Chat</h1>
       <p>Status: {status}</p>
+
+      <input
+        type="text"
+        placeholder="Your name"
+        value={user}
+        onChange={(e) => setUser(e.target.value)}
+      />
+
+
+      <div>
+        {messages.map((msg, index) => (
+          <p key={index}> <strong>{msg.user}:</strong> {msg.message}
+          </p>
+        ))}
+      </div>
+
+      <input
+        type="text"
+        placeholder="Write a message"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+      />
+    
+      <button onClick={sendMessage}>
+        Send
+      </button>
     </div>
   );
 }
