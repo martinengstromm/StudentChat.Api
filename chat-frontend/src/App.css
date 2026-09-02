@@ -18,6 +18,11 @@ body {
   margin: 0;
 }
 
+.status{
+  margin: 5px 0 0;
+  color: #666;
+}
+
 .user-settings {
   display: flex;
   gap: 10px;
@@ -57,16 +62,27 @@ body {
 }
 
 /* Området där meddelanden visas */
-.general-chat > div,
-.announcements > div {
+.general-chat > div:first-of-type,
+.announcements > div:first-of-type {
   flex: 1;
+  overflow-y: auto;
+  max-height: 380px;
 }
 
-.message-input input {
+/* input rader i botten */
+.message-input, .announcement-input {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+/* inputfält */
+.message-input input, .announcement-input input {
   flex: 1;
   padding: 10px;
 }
 
-.announcement-input button {
+/*knappar*/
+.message-input button, .announcement-input button {
   padding: 10px 20px;
 }

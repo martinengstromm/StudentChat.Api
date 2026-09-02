@@ -32,7 +32,7 @@ function App() {
         setMessages((oldMessages) => [
           ...oldMessages,
           {user, role, message}
-        ]);
+        ].slice(-50));
     });
 
     // Tar emot announcements
