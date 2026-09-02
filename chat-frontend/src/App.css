@@ -4,6 +4,29 @@ body {
   background-color: #f5f5f5;
 }
 
+/* Header */
+.header {
+  background-color: white;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.header hi{
+  margin: 0;
+}
+
+.user-settings {
+  display: flex;
+  gap: 10px;
+}
+
+.user-settings input, .user-settings select {
+  padding: 8px;
+}
+
 /* chat vänster & announcements höger */
 .chat-layout {
   display: flex;
@@ -23,4 +46,27 @@ body {
   background-color: white;
   border: 1px solid #ccc;
   padding: 20px;
+}
+
+/* struktur för panelerna */
+.general-chat,
+.announcements {
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Området där meddelanden visas */
+.general-chat > div,
+.announcements > div {
+  flex: 1;
+}
+
+.message-input input {
+  flex: 1;
+  padding: 10px;
+}
+
+.announcement-input button {
+  padding: 10px 20px;
 }

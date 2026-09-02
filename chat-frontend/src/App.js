@@ -108,8 +108,6 @@ function App() {
         </div>
       </div>
         
-      <hr />
-
         <div className="chat-layout">
 
           <div className="general-chat">
@@ -122,20 +120,19 @@ function App() {
               ))}
             </div>
 
-            <input
-              type="text"
-              placeholder="Write a message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-          
-            <button onClick={sendMessage}>
-              Send
-            </button>
+            <div className="message-input">
+              <input
+                type="text"
+                placeholder="Write a message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
             
+              <button onClick={sendMessage}>
+                Send
+              </button>
+            </div>
           </div>
-
-        <hr />
           
         <div className="announcements">
           <h2>Announcements</h2>
@@ -149,14 +146,14 @@ function App() {
           </div>    
 
           {role === "Teacher" && (
-            <div>
+            <div className="announcement-input">
               <input
                 type="text"
                 placeholder="Write an announcement"
                 value={announcement}
                 onChange={(e) => setAnnouncement(e.target.value)}
               />
-              ¨
+    
               <button onClick={sendAnnouncement}>
                 Publish
               </button>
